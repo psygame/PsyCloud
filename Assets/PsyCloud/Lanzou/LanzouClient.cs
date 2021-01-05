@@ -1,8 +1,6 @@
-﻿using Hzexe.Lanzou.Model.Lanzou;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Hzexe.Lanzou
+namespace PsyCloud
 {
     public class LanzouClient
     {
@@ -30,23 +28,13 @@ namespace Hzexe.Lanzou
                 ck.Domain = ".woozooo.com";
                 cookieContainer.Add(ck);
             }
-#if NETCOREAPP3_0
-            handler = new SocketsHttpHandler()
-            {
-                AllowAutoRedirect = false,
-                CookieContainer = cookieContainer,
-                PooledConnectionLifetime = TimeSpan.FromHours(1),
-                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(20),
-                MaxConnectionsPerServer = 6,
-            };
-#else
             handler = new HttpClientHandler()
             {
                 AllowAutoRedirect = false,
                 CookieContainer = cookieContainer,
             };
-#endif
         }
+
         public async Task<LanZouFileResult> FileUploadAsync(string folder_id, Stream file, string filename, int filesize)
         {
             HttpClient client = new HttpClient(handler, false);

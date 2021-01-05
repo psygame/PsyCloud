@@ -1,6 +1,4 @@
-﻿using Hzexe.Lanzou;
-using Hzexe.Lanzou.Model.Lanzou;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -59,13 +57,13 @@ namespace PsyCloud
             foldoutDict.TryGetValue(key, out var foldout);
             return foldout;
         }
-        
+
         private void DrawDir(GetDirResponse.TextItem dir)
         {
             foldoutDict[dir.fol_id] = EditorGUILayout.Foldout(GetFoldout(dir.fol_id), dir.name);
             if (!foldoutDict[dir.fol_id])
-            { 
-            
+            {
+
             }
         }
     }

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Hzexe.Lanzou.Model.Lanzou
+namespace PsyCloud
 {
     [Serializable]
-    public class MkdirResponse: ResponseBase
+    public class MkdirResponse : ResponseBase
     {
         /// <summary>
         /// 创建成功

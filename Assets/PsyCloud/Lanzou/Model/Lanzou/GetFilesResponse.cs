@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Hzexe.Lanzou.Model.Lanzou
+namespace PsyCloud
 {
     [Serializable]
-    public class GetFilesResponse:ResponseBase
+    public class GetFilesResponse : ResponseBase
     {
 
         /// <summary>
@@ -17,7 +16,7 @@ namespace Hzexe.Lanzou.Model.Lanzou
         /// </summary>
         public List<TextItem> text { get; set; }
 
-    [Serializable]
+        [Serializable]
         public class TextItem
         {
             /// <summary>

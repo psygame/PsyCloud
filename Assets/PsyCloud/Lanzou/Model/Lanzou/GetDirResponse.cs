@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Hzexe.Lanzou.Model.Lanzou
+namespace PsyCloud
 {
     [Serializable]
     public class GetDirResponse : ResponseBase
@@ -15,7 +13,7 @@ namespace Hzexe.Lanzou.Model.Lanzou
         /// 子目录集合
         /// </summary>
         public TextItem[] text;
-    
+
         [Serializable]
         public class InfoItem
         {
