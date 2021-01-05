@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,41 +14,27 @@ namespace PsyCloud
             window.Show();
         }
 
-        LanzouClient client = null;
-        string cookies = "";
-        GetDirResponse.TextItem root;
-        bool isLogin => client != null;
-        Vector2 scroll = Vector2.zero;
+        string cookies = "phpdisk_info=U2ZRYlAyVm5UZARiAG4HVAJgBDULWwJkUmkHYQI0U2EEMV5sAGdSagE7B2QPXARrVWRQM14wBWdVbgQ1DzpRZlM2UTFQYFZjVGAEYQBuB2oCYQQ0C2QCMFIzBzECNVNjBDJeZQA3Um4BOgc1D2AEV1U0UGpeMQViVWYEZQ85UWZTY1FrUDE%3D; ylogin=1104264";
+        Cloud cloud;
+        Vector2 scroll;
 
-        private async void OnGUI()
+        private void OnGUI()
         {
             cookies = EditorGUILayout.TextField("Cookies", cookies);
 
-            if (!isLogin)
+            if (cloud == null)
             {
                 if (GUILayout.Button("Login"))
                 {
-                    client = new LanzouClient(cookies);
-                    root = new GetDirResponse.TextItem() { fol_id = "-1", name = "Root", is_lock = "0", onof = "0", folder_des = "", folderlock = "0" };
+                    cloud = new Cloud();
+                    Task.WaitAll(cloud.Login(cookies));
                 }
             }
             else
             {
                 scroll = EditorGUILayout.BeginScrollView(scroll);
-                DrawDir(root);
+                DrawDir(cloud.root);
                 EditorGUILayout.EndScrollView();
-            }
-
-            if (client != null)
-            {
-                if (GUILayout.Button("Fetch"))
-                {
-                    var rep = await client.LsDirAsync("-1");
-                    foreach (var dir in rep.text)
-                    {
-                        Debug.LogError(dir.name + "\n" + dir.fol_id);
-                    }
-                }
             }
         }
 
@@ -58,12 +45,50 @@ namespace PsyCloud
             return foldout;
         }
 
-        private void DrawDir(GetDirResponse.TextItem dir)
+        private void DrawDir(CloudDirectory dir, int intent = 0)
         {
-            foldoutDict[dir.fol_id] = EditorGUILayout.Foldout(GetFoldout(dir.fol_id), dir.name);
-            if (!foldoutDict[dir.fol_id])
+            EditorGUI.indentLevel = intent;
+            EditorGUI.BeginChangeCheck();
+            if (dir == null || dir.name == null)
             {
+                Debug.LogError("dir is null");
+                return;
+            }
+            foldoutDict[dir.id] = EditorGUILayout.Foldout(GetFoldout(dir.id), dir.name);
+            var changed = EditorGUI.EndChangeCheck();
+            if (changed)
+            {
+                if (foldoutDict[dir.id])
+                {
+                    if (!dir.isGettingDirectories)
+                        Task.WaitAll(dir.GetDirectories());
+                    if (!dir.isGettingFiles)
+                        Task.WaitAll(dir.GetFiles());
+                }
+                else
+                {
+                    if (!dir.isGettingDirectories && !dir.isGettingFiles)
+                        dir.ClearCaches();
+                }
+            }
 
+            if (foldoutDict[dir.id])
+            {
+                if (dir.cachedDirectories != null)
+                {
+                    foreach (var _dir in dir.cachedDirectories)
+                    {
+                        DrawDir(_dir, intent + 1);
+                    }
+                }
+
+                if (dir.cachedFiles != null)
+                {
+                    foreach (var _file in dir.cachedFiles)
+                    {
+                        EditorGUILayout.LabelField($"{_file.name} : {_file.size}");
+                    }
+                }
             }
         }
     }
