@@ -8,10 +8,10 @@ namespace PsyCloud
         /// <summary>
         /// 创建成功
         /// </summary>
-        public string info { get; set; }
+        public string info;
         /// <summary>
         /// ID
         /// </summary>
-        public string text { get; set; }
+        public string text;
     }
 }

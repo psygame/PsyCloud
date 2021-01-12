@@ -10,9 +10,7 @@ namespace PsyCloud
         public string desc { get; private set; }
 
         public List<CloudFile> cachedFiles { get; private set; }
-        public bool isGettingFiles { get; private set; }
         public List<CloudDirectory> cachedDirectories { get; private set; }
-        public bool isGettingDirectories { get; private set; }
 
         private LanzouClient client;
         private GetDirResponse.TextItem info;
@@ -30,7 +28,6 @@ namespace PsyCloud
         {
             if (cachedFiles == null)
             {
-                isGettingFiles = true;
                 var rep = await this.client.LsFilesAsync(info.fol_id, page);
                 cachedFiles = new List<CloudFile>();
                 if (rep.text != null)
@@ -40,7 +37,6 @@ namespace PsyCloud
                         cachedFiles.Add(new CloudFile(this.client, info));
                     }
                 }
-                isGettingFiles = false;
             }
             return cachedFiles;
         }
@@ -49,7 +45,6 @@ namespace PsyCloud
         {
             if (cachedDirectories == null)
             {
-                isGettingDirectories = true;
                 var rep = await this.client.LsDirAsync(info.fol_id);
                 cachedDirectories = new List<CloudDirectory>();
                 if (rep.text != null)
@@ -59,7 +54,6 @@ namespace PsyCloud
                         cachedDirectories.Add(new CloudDirectory(this.client, info));
                     }
                 }
-                isGettingDirectories = false;
             }
             return cachedDirectories;
         }

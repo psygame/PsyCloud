@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace PsyCloud
 {
     [Serializable]
     public class GetFilesResponse : ResponseBase
     {
-
         /// <summary>
         /// 
         /// </summary>
-        public int info { get; set; }
+        public int info;
         /// <summary>
         /// 
         /// </summary>
-        public List<TextItem> text { get; set; }
+        public TextItem[] text;
 
         [Serializable]
         public class TextItem
@@ -22,51 +20,51 @@ namespace PsyCloud
             /// <summary>
             /// 
             /// </summary>
-            public string icon { get; set; }
+            public string icon;
             /// <summary>
             /// 
             /// </summary>
-            public string id { get; set; }
+            public string id;
             /// <summary>
             /// 
             /// </summary>
-            public string name_all { get; set; }
+            public string name_all;
             /// <summary>
             /// 
             /// </summary>
-            public string name { get; set; }
+            public string name;
             /// <summary>
             /// 
             /// </summary>
-            public string size { get; set; }
+            public string size;
             /// <summary>
             /// 21 分钟前
             /// </summary>
-            public string time { get; set; }
+            public string time;
             /// <summary>
             /// 
             /// </summary>
-            public string downs { get; set; }
+            public string downs;
             /// <summary>
             /// 
             /// </summary>
-            public string onof { get; set; }
+            public string onof;
             /// <summary>
             /// 
             /// </summary>
-            public string is_lock { get; set; }
+            public string is_lock;
             /// <summary>
             /// 
             /// </summary>
-            public string filelock { get; set; }
+            public string filelock;
             /// <summary>
             /// 
             /// </summary>
-            public int is_des { get; set; }
+            public int is_des;
             /// <summary>
             /// 
             /// </summary>
-            public int is_ico { get; set; }
+            public int is_ico;
         }
     }
 }

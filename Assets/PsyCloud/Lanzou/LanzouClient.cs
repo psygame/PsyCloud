@@ -168,7 +168,7 @@ namespace PsyCloud
             return obj;
         }
 
-        public async Task<string> GetDurl(string url)
+        public async Task<GetDurlResponse> GetDurl(string url)
         {
             HttpClient client = new HttpClient(handler, false);
             client.DefaultRequestHeaders.Add("user-agent", userAgent);
@@ -224,16 +224,16 @@ namespace PsyCloud
                 res = await client.PostAsync(check_api, encodedContent);
                 res.EnsureSuccessStatusCode();
                 var resJson = await res.Content.ReadAsStringAsync();
-                // var jd = JsonDocument.Parse(resJson);
-                // var aurl = jd.RootElement.GetProperty("url").GetString();
+                var durl = JsonUtility.FromJson<GetDurlResponse>(resJson);
                 client.Dispose();
-                return resJson;
+                return durl;
             }
             else
             {
                 client.Dispose();
                 //重定向后的真直链
-                return res.Content.Headers.ContentLocation.ToString();
+                var _durl = res.Content.Headers.ContentLocation.ToString();
+                return new GetDurlResponse() { zt = 1, url = _durl };
             }
         }
 
